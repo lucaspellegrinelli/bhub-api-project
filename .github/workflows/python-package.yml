@@ -3,14 +3,11 @@
 
 name: Python package
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: push
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
     env:
       DB_URL: postgresql+pg8000://${{ secrets.PGUSER }}:${{ secrets.PGPASSWORD }}@${{ secrets.PGHOST }}:${{ secrets.PGPORT }}/${{ secrets.PGDATABASE }}
@@ -31,10 +28,6 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install flake8 pytest
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Create .env file
-        run: |
-          echo "SQLALCHEMY_DATABASE_URL=$DB_URL" >> .env
-          echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" >> .env
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names
@@ -43,4 +36,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
+        rm -rf .env
+        echo "SQLALCHEMY_DATABASE_URL=$DB_URL" > .env
+        echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" >> .env
         python -m pytest

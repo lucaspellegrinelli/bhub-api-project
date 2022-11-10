@@ -1,15 +1,10 @@
 name: Deployment
-on:
-  push:
-    branches: [ main ]
+on: push
 
 jobs:
   deploy:
     name: Deploy
     runs-on: ubuntu-latest
-    env:
-      DB_URL: postgresql+pg8000://${{ secrets.PGUSER }}:${{ secrets.PGPASSWORD }}@${{ secrets.PGHOST }}:${{ secrets.PGPORT }}/${{ secrets.PGDATABASE }}
-      TEST_DB_URL: sqlite:///./test.db
     steps:
       - name: server ssh connection
         uses: appleboy/ssh-action@master
@@ -20,8 +15,10 @@ jobs:
           port: 22
           script: |
             cd bhub-api-project/
-            echo "SQLALCHEMY_DATABASE_URL=$DB_URL" >> .env
-            echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" >> .env
-            git pull origin main
+            rm -rf .env
+            git fetch --all
+            git reset --hard origin/main
+            echo "SQLALCHEMY_DATABASE_URL=postgresql+pg8000://${{ secrets.PGUSER }}:${{ secrets.PGPASSWORD }}@${{ secrets.PGHOST }}:${{ secrets.PGPORT }}/${{ secrets.PGDATABASE }}" > .env
+            echo "SQLALCHEMY_TESTING_DATABASE_URL=sqlite:///./test.db" >> .env
             sudo docker-compose up -d --force-recreate
             
