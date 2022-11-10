@@ -10,25 +10,38 @@ from core.sqlalchemy import Base, get_db
 
 from apis.users import router as users_router
 
+# Path for the Mock database
 SQL_ALCHEMY_TESTING_DATABASE_URL = "sqlite:///./test.db"
+
+# Create the mock database engine
 engine = create_engine(SQL_ALCHEMY_TESTING_DATABASE_URL, connect_args={"check_same_thread": False})
+
+# Create the mock database session
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 
 def start_application() -> FastAPI:
+    """
+    Starts the application and returns the FastAPI app.
+    """
     app = FastAPI()
     app.include_router(users_router)
     return app
 
 @pytest.fixture(scope="function")
 def app() -> Generator[FastAPI, Any, None]:
-    """ Create a fresh database on each test case. """
-    Base.metadata.create_all(engine) # Create the tables.
+    """
+    Create a fresh database on each test case.
+    """
+    Base.metadata.create_all(engine)
     _app = start_application()
     yield _app
     Base.metadata.drop_all(engine)
 
 @pytest.fixture(scope="function")
 def db_session(app: FastAPI) -> Generator[SessionTesting, Any, None]:
+    """
+    Create a fresh database session on each test case.
+    """
     connection = engine.connect()
     transaction = connection.begin()
     session = SessionTesting(bind=connection)

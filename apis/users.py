@@ -13,23 +13,29 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=list[UserSchema])
-def read_users(db: Session = Depends(get_db)):
-    """Returns a list of all users."""
+def read_all_users(db: Session = Depends(get_db)):
+    """
+    Returns a list of all users.
+    """
     query_results = db.query(UserModel).all()
     pydantic_models = [UserSchema.from_orm(r) for r in query_results]
     return pydantic_models
 
 @router.get("/{user_id}", response_model=UserSchema)
 def read_user(user_id: int, db: Session = Depends(get_db)):
-    """Returns a specific user."""
+    """
+    Returns the information for a specific user.
+    """
     query_result = db.query(UserModel).filter(UserModel.id == user_id).first()
     if query_result is None:
         raise HTTPException(status_code=404, detail="User not found")
     return UserSchema.from_orm(query_result)
 
 @router.post("/", response_model=UserSchema)
-def create_user(user: UserSchema, db: Session = Depends(get_db)):
-    """Creates a new user."""
+def insert_user(user: UserSchema, db: Session = Depends(get_db)):
+    """
+    Inserts a new user into the database.
+    """
 
     # Creating new bank details objects in database
     db_bank_details = []
@@ -60,7 +66,9 @@ def create_user(user: UserSchema, db: Session = Depends(get_db)):
 
 @router.put("/{user_id}", response_model=UserSchema)
 def update_user(user_id: int, user: UserSchema, db: Session = Depends(get_db)):
-    """Updates a specific user."""
+    """
+    Updates the information for a specific user.
+    """
     db_user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
@@ -76,7 +84,9 @@ def update_user(user_id: int, user: UserSchema, db: Session = Depends(get_db)):
 
 @router.delete("/{user_id}", response_model=UserSchema)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
-    """Deletes a specific user."""
+    """
+    Deletes a specific user from the database.
+    """
     db_user = db.query(UserModel).filter(UserModel.id == user_id).first()
     if db_user is None:
         raise HTTPException(status_code=404, detail="User not found")
