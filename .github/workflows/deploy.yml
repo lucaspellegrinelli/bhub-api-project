@@ -16,7 +16,8 @@ jobs:
           script: |
             cd bhub-api-project/
             rm -rf .env
-            git pull origin main
+            git fetch --all
+            git reset --hard origin/main
             echo "SQLALCHEMY_DATABASE_URL=postgresql+pg8000://${{ secrets.PGUSER }}:${{ secrets.PGPASSWORD }}@${{ secrets.PGHOST }}:${{ secrets.PGPORT }}/${{ secrets.PGDATABASE }}" > .env
             echo "SQLALCHEMY_TESTING_DATABASE_URL=sqlite:///./test.db" >> .env
             sudo docker-compose up -d --force-recreate
