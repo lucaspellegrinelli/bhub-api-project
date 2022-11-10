@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Query
 from sqlalchemy.orm import Session
 
 from core.schemas import BankDetails as BankDetailsSchema
@@ -14,10 +14,26 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=list[BankDetailsSchema])
-def read_all_bank_details(db: Session = Depends(get_db)):
+def read_all_bank_details(
+    agency: str | None = Query(default=None, description="The agency of the user bank account."),
+    account: str | None = Query(default=None, description="The account of the user bank account."),
+    bank: str | None = Query(default=None, description="The bank of the user bank account."),
+    db: Session = Depends(get_db)
+):
     """
     Returns a list of all banks.
     """
+    # creates the filters dictionary
+    filters = {
+        "agency": agency,
+        "account": account,
+        "bank": bank
+    }
+
+    # removes the None values from the filters dictionary
+    filters = {k: v for k, v in filters.items() if v is not None}
+
+    # creates the query
     query_result = db.query(BankDetailsModel).all()
     pydantic_models = [BankDetailsSchema.from_orm(r) for r in query_result]
     return pydantic_models
@@ -35,7 +51,7 @@ def insert_bank_details(bank: BankDetailsSchema, db: Session = Depends(get_db)):
     """
     Inserts a new bank into the database.
     """
-    db_bank = BankDetailsModel(bank.dict())
+    db_bank = BankDetailsModel(**bank.dict())
     db.add(db_bank)
     db.commit()
     db.refresh(db_bank)

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from core.schemas import User as UserSchema
@@ -13,11 +13,31 @@ router = APIRouter(
 )
 
 @router.get("/", response_model=list[UserSchema])
-def read_all_users(db: Session = Depends(get_db)):
+def read_all_users(
+    corporate_name: str | None = Query(default=None, description="The corporate name of the user."),
+    phone: str | None = Query(default=None, description="The phone number of the user."),
+    address: str | None = Query(default=None, description="The address of the user."),
+    registration_date: str | None = Query(default=None, description="The registration date of the user in the format dd/mm/yyyy."),
+    declared_revenue: float | None = Query(default=None, description="The declared revenue of the user."),
+    db: Session = Depends(get_db)
+):
     """
     Returns a list of all users.
     """
-    query_results = db.query(UserModel).all()
+    # creates the filters dictionary
+    filters = {
+        "corporate_name": corporate_name,
+        "phone": phone,
+        "address": address,
+        "registration_date": registration_date,
+        "declared_revenue": declared_revenue
+    }
+
+    # removes the None values from the filters dictionary
+    filters = {k: v for k, v in filters.items() if v is not None}
+
+    # creates the query
+    query_results = db.query(UserModel).filter_by(**filters).all()
     pydantic_models = [UserSchema.from_orm(r) for r in query_results]
     return pydantic_models
 
@@ -37,10 +57,12 @@ def insert_user(user: UserSchema, db: Session = Depends(get_db)):
     Inserts a new user into the database.
     """
     # Creating new bank details objects in database
-    db_bank_details = [BankDetailsModel(bank.dict()) for bank in user.bank_details]
+    db_bank_details = [BankDetailsModel(**bank.dict()) for bank in user.bank_details]
     
     # Creating new user object in database
-    db_user = UserModel(user.dict())
+    user_data = user.dict()
+    user_data.pop("bank_details")
+    db_user = UserModel(**user_data)
 
     # Adding new user and bank details to database
     db.add(db_user)
