@@ -25,3 +25,7 @@ class User(BaseModel):
         if not value.isdigit():
             raise ValueError("Phone must contain only digits.")
         return value
+
+    class Config:
+        # ORM mode allows pydantic to convert from a database model to a pydantic model
+        orm_mode = True
