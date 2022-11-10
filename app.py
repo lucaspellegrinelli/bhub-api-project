@@ -2,6 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from apis.users import router as users_router
+from apis.banks import router as banks_router
 
 # Creating FastAPI app
 app = FastAPI(
@@ -23,3 +24,4 @@ app.add_middleware(
 
 # Adding routers
 app.include_router(users_router)
+app.include_router(banks_router)
