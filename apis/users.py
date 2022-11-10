@@ -63,7 +63,7 @@ def insert_user(user: UserSchema, db: Session = Depends(get_db)):
     # Creating new user object in database
     user_data = user.dict()
     user_data.pop("bank_details")
-    db_user = UserModel(**user_data)
+    db_user = UserModel(**user_data, bank_details=db_bank_details)
 
     # Adding new user and bank details to database
     db.add(db_user)
