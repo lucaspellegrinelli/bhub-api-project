@@ -1,4 +1,5 @@
-from datetime import datetime, date
+from datetime import date
+from dateutil.parser import parse
 from pydantic import BaseModel, validator
 
 from core.schemas.bankdetails import BankDetails
@@ -16,7 +17,7 @@ class User(BaseModel):
     def parse_registration_date(cls, value):
         """Converts a string to a date object."""
         if isinstance(value, str):
-            return datetime.strptime(value, "%d/%m/%Y").date()
+            return parse(value).date()
         return value
 
     @validator("phone")

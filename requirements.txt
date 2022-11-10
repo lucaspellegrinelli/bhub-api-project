@@ -5,3 +5,4 @@ watchfiles
 sqlalchemy
 python-dotenv
 requests
+dateutil

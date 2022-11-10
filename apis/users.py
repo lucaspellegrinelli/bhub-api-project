@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
+from dateutil.parser import parse
 
 from core.schemas import User as UserSchema
 from core.models import User as UserModel, BankDetails as BankDetailsModel
@@ -17,7 +18,7 @@ def read_all_users(
     corporate_name: str | None = Query(default=None, description="The corporate name of the user."),
     phone: str | None = Query(default=None, description="The phone number of the user."),
     address: str | None = Query(default=None, description="The address of the user."),
-    registration_date: str | None = Query(default=None, description="The registration date of the user in the format dd/mm/yyyy."),
+    registration_date: str | None = Query(default=None, description="The registration date of the user."),
     declared_revenue: float | None = Query(default=None, description="The declared revenue of the user."),
     db: Session = Depends(get_db)
 ):
@@ -29,12 +30,12 @@ def read_all_users(
         "corporate_name": corporate_name,
         "phone": phone,
         "address": address,
-        "registration_date": registration_date,
+        "registration_date": parse(registration_date).date() if registration_date is not None else None,
         "declared_revenue": declared_revenue
     }
 
     # removes the None values from the filters dictionary
-    filters = {k: v for k, v in filters.items() if v is not None}
+    filters = {k: str(v) for k, v in filters.items() if v is not None}
 
     # creates the query
     query_results = db.query(UserModel).filter_by(**filters).all()
