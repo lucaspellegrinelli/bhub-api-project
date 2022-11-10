@@ -1,8 +1,13 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from core.sqlalchemy import Base, engine
+
 from apis.users import router as users_router
 from apis.banks import router as banks_router
+
+# Initialize Base and create tables
+Base.metadata.create_all(bind=engine)
 
 # Creating FastAPI app
 app = FastAPI(
