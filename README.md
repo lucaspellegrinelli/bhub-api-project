@@ -14,11 +14,12 @@ Mini projeto desenvolvido na seleção de candidatos na BHub
   - [x] Funcionais utilizando [Pytest](https://pytest.org/) (testando as rotas da API e seus resultados)
   - [x] De API utilizando [Postman](https://www.postman.com/) (testando a API online)
   - [x] Mock do banco de dados durante os testes
+- [x] Hosteamento da aplicação no AWS EC2 - [http://18.219.39.223/](http://18.219.39.223/)
+- [x] Utilização do [Docker](https://www.docker.com/) para distribuição
 - [x] [Github Actions](https://github.com/features/actions)
   - [x] Linting utilizando o [flake8](https://flake8.pycqa.org/)
   - [x] Execução automática dos testes do Pytest e Postman
-- [x] Utilização do [Docker](https://www.docker.com/) para distribuição
-- [x] Hosteamento da aplicação no AWS EC2 - [http://18.219.39.223/](http://18.219.39.223/)
+  - [x] Deploy automático para servidor AWS EC2
 - [x] Hosteamento do banco de dados na núvem
   - [x] AWS Relational Database Service (RDS)
   - [x] Railway (melhor para a visualização das tarefas na explicação da arquitetura)
