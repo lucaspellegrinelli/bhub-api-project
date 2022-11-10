@@ -13,7 +13,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI(
     title="BHub Project API",
     description="An API built for the BHub admission process.",
-    version="1.0.1",
+    version="1.0.0",
     docs_url="/",
     redoc_url=None
 )
