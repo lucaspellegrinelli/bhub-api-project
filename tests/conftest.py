@@ -1,5 +1,6 @@
 from typing import Generator, Any
 
+import os
 import pytest
 from fastapi import FastAPI
 from sqlalchemy import create_engine
@@ -10,11 +11,8 @@ from core.sqlalchemy import Base, get_db
 
 from apis.users import router as users_router
 
-# Path for the Mock database
-SQL_ALCHEMY_TESTING_DATABASE_URL = "sqlite:///./test.db"
-
 # Create the mock database engine
-engine = create_engine(SQL_ALCHEMY_TESTING_DATABASE_URL, connect_args={"check_same_thread": False})
+engine = create_engine(os.getenv("SQLALCHEMY_TESTING_DATABASE_URL"), connect_args={"check_same_thread": False})
 
 # Create the mock database session
 SessionTesting = sessionmaker(autocommit=False, autoflush=False, bind=engine)

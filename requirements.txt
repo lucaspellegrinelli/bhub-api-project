@@ -3,3 +3,4 @@ pydantic
 uvicorn
 watchfiles
 sqlalchemy
+python-dotenv
