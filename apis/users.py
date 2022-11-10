@@ -36,27 +36,11 @@ def insert_user(user: UserSchema, db: Session = Depends(get_db)):
     """
     Inserts a new user into the database.
     """
-
     # Creating new bank details objects in database
-    db_bank_details = []
-    for bank_detail in user.bank_details:
-        db_bank_details.append(
-            BankDetailsModel(
-                agency=bank_detail.agency,
-                account=bank_detail.account,
-                bank=bank_detail.bank
-            )
-        )
+    db_bank_details = [BankDetailsModel(bank.dict()) for bank in user.bank_details]
     
     # Creating new user object in database
-    db_user = UserModel(
-        corporate_name=user.corporate_name,
-        phone=user.phone,
-        address=user.address,
-        registration_date=user.registration_date,
-        declared_revenue=user.declared_revenue,
-        bank_details=db_bank_details
-    )
+    db_user = UserModel(user.dict())
 
     # Adding new user and bank details to database
     db.add(db_user)

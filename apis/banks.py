@@ -35,13 +35,7 @@ def insert_bank_details(bank: BankDetailsSchema, db: Session = Depends(get_db)):
     """
     Inserts a new bank into the database.
     """
-
-    db_bank = BankDetailsModel(
-        agency=bank.agency,
-        account=bank.account,
-        bank=bank.bank,
-    )
-
+    db_bank = BankDetailsModel(bank.dict())
     db.add(db_bank)
     db.commit()
     db.refresh(db_bank)
