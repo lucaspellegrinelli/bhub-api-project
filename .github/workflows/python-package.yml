@@ -10,6 +10,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
+      DB_URL: postgresql+pg8000://${{ secrets.PGUSER }}:${{ secrets.PGPASSWORD }}@${{ secrets.PGHOST }}:${{ secrets.PGPORT }}/${{ secrets.PGDATABASE }}
       TEST_DB_URL: sqlite:///./test.db
     strategy:
       fail-fast: false
@@ -35,6 +36,6 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Test with pytest
       run: |
-        echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" > .env
-        cat .env
+        echo "SQLALCHEMY_DATABASE_URL=$DB_URL" > .env
+        echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" >> .env
         python -m pytest
