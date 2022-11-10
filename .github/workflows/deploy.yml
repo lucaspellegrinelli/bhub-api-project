@@ -18,6 +18,7 @@ jobs:
           port: 22
           script: |
             cd bhub-api-project/
+            rm -rf .env
             git pull origin main
             echo "SQLALCHEMY_DATABASE_URL=$DB_URL" > .env
             echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" >> .env
