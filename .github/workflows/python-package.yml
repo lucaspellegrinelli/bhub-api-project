@@ -36,4 +36,5 @@ jobs:
     - name: Test with pytest
       run: |
         echo "SQLALCHEMY_TESTING_DATABASE_URL=$TEST_DB_URL" > .env
+        cat .env
         python -m pytest
