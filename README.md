@@ -1,6 +1,25 @@
 # Projeto - BHub API CRUD
 
-Mini projeto desenvolvido na seleção de candidatos na BHub## Como executar
+Mini projeto desenvolvido na seleção de candidatos na BHub
+
+## Features
+
+- [x] API CRUD
+  - [x] Modelagem dos dados utilizando [Pydantic](https://pydantic-docs.helpmanual.io/)
+  - [x] Criação da API utilizando [FastAPI](https://fastapi.tiangolo.com/)
+  - [x] Conexão com banco de dados utilizando [SQLAlchemy](https://www.sqlalchemy.org/)
+- [x] Documentação utilizando [Swagger](https://swagger.io/)
+- [x] Testes
+  - [x] Unitários utilizando [Pytest](https://pytest.org/) (testando a modelagem de dados)
+  - [x] Funcionais utilizando [Pytest](https://pytest.org/) (testando as rotas da API e seus resultados)
+  - [x] De API utilizando [Postman](https://www.postman.com/) (testando a API online)
+  - [x] Mock do banco de dados durante os testes
+  - [x] Execução automática dos testes com [Github Actions](https://github.com/features/actions)
+- [x] Utilização do [Docker](https://www.docker.com/) para distribuição
+- [x] Hosteamento da aplicação no AWS EC2 - [http://18.219.39.223/](http://18.219.39.223/)
+- [x] Hosteamento do banco de dados na núvem
+  - [x] AWS Relational Database Service (RDS)
+  - [x] Railway (melhor para a visualização das tarefas na explicação da arquitetura)
 
 ## Como executar
 
@@ -12,11 +31,9 @@ Depois de instalar o [Docker](https://docs.docker.com/engine/install/ubuntu/), e
   docker compose up --build
 ```
 
-E pronto! Tanto a API e o frontend estarão disponíveis em `localhost:8001` e `localhost:8000` respectivamente.
+E pronto! A API estará disponível em `localhost:8000`.
 
 ### 2. Sem utilizar Docker
-
-#### API
 
 Para executar a API você vai precisar do [Python 3.10](https://www.python.org/downloads/) e do [pip](https://pip.pypa.io/en/stable/installation/) instalado. Com isso pronto, para instalar os pacotes necessários, execute na raíz do projeto:
 
@@ -30,19 +47,8 @@ Com os pacotes instalados, para executar a API execute, também na raíz do proj
   uvicorn app:app --reload
 ```
 
-#### Front End
+O servidor estará disponível em `localhost:8000`.
 
-Já para executar o Front End será necessário instalar o [NodeJS (versão 18.12.1)](https://nodejs.org/en/download/). Para instalar os pacotes necessários, execute na raíz do projeto:
-
-```
-  npm install
-```
-
-Com os pacotes instalados, para executar o Front End execute, também na raíz do projeto:
-
-```
-  npm run dev
-```
 ## Executando testes
 
 Os testes são executados utilizando o pacote `pytest`. Dessa forma basta executar no seu terminal (após já ter instalado os pacotes como descrito na seção `Como executar`):
