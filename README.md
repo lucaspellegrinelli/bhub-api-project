@@ -31,10 +31,10 @@ Mini projeto desenvolvido na seleção de candidatos na BHub
 Depois de instalar o [Docker](https://docs.docker.com/engine/install/ubuntu/), execute no terminal:
 
 ```
-  docker compose up --build
+  docker compose up
 ```
 
-E pronto! A API estará disponível em `localhost:8000`.
+E pronto! A API estará disponível em `localhost:8080`.
 
 ### 2. Sem utilizar Docker
 
