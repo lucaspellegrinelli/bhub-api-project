@@ -50,7 +50,7 @@ Com os pacotes instalados, para executar a API execute, também na raíz do proj
   uvicorn app:app --reload
 ```
 
-O servidor estará disponível em `localhost:8080`.
+O servidor estará disponível em `localhost:8000`.
 
 ## Executando testes
 
