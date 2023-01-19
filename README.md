@@ -1,6 +1,6 @@
 # Projeto - BHub API CRUD
 
-Mini projeto desenvolvido na seleção de candidatos na BHub
+Mini projeto desenvolvido na seleção de candidatos na BHub.
 
 ## Features
 
